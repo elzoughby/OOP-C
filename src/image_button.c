@@ -1,16 +1,28 @@
+/* ************************ IMAGEBUTTON CLASS SOURCE ************************ */
+
+
+
+/* -------------------------------- INCLUDES -------------------------------- */
+
 #include <assert.h>
-#include <string.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include "image_button.h"
 
 
 
+/* ------------------------------ PRIVATE DATA ------------------------------ */
+
+
+
+/* --------------------- VIRTUAL METHODS IMPLEMENTATION --------------------- */
+
 static inline void __rotate(ImageButton * const self) {
-    printf("Image Button got rotated!\n");
+    printf("ImageButton object with id %u got rotated!\n", Object_getId((Object *) self));
 }
 
 static inline void __emulateClick(ImageButton * const self) {
-    printf("Emulating Image Button Click...\n");
+    printf("Emulating ImageButton Click...\n");
     self->super.onClick((Button *) self);
 }
 
@@ -24,6 +36,20 @@ static inline char * __toString(ImageButton const * const self) {
 }
 
 
+
+/* ------------------------ PRIVATE STATIC FUNCTIONS ------------------------ */
+
+
+
+/* ------------------------- PUBLIC STATIC FUNCTIONS ------------------------ */
+
+
+
+/* ------------------------- PRIVATE CLASS METHODS -------------------------- */
+
+
+
+/* ----------------------- CONSTRUCTORS & DESTRUCTORS ----------------------- */
 
 void ImageButton_construct(ImageButton * const self, 
                            int x, int y, 
@@ -45,7 +71,7 @@ void ImageButton_construct(ImageButton * const self,
     };
 
     Button_construct(&self->super, x, y, width, height, text, (void (*)(Button *)) onClick);
-    strcpy(self->super.super.super.className, IMAGEBUTTON_CLASS_NAME);
+    self->super.super.super.className = IMAGEBUTTON_CLASS_NAME;
     self->super.super.super.classId = IMAGEBUTTON_CLASS_ID;
     self->super.super.super.vTable = &ovTable;
     self->super.super.vTable = &wvTable;
@@ -53,6 +79,24 @@ void ImageButton_construct(ImageButton * const self,
     self->vTable = &ibvTable;
     self->image = image;
 }
+
+ImageButton * ImageButton_create(int x, int y, 
+                                int width, int height, 
+                                char * const text, 
+                                void (*onClick) (ImageButton * const self),
+                                char * const image) {
+    ImageButton * const self = (ImageButton *) malloc(sizeof(ImageButton));
+    ImageButton_construct(self, x, y, width, height, text, onClick, image);
+    return self;
+}
+
+void ImageButton_destroy(ImageButton * const self) {
+    free(self);
+}
+
+
+
+/* ----------------------------- CLASS METHODS ------------------------------ */
 
 char * ImageButton_getImage(ImageButton const * const self) {
     return self->image;
@@ -66,9 +110,17 @@ void ImageButton_rotate(ImageButton * const self) {
     self->vTable->rotate(self);
 }
 
+
+
+/* ---------------------------- VIRTUAL METHODS ----------------------------- */
+
 void ImageButton_emulateClick(ImageButton * const self) {
     self->super.vTable->emulateClick((Button *) self);
 }
+
+
+
+/* --------------------------- OVERRIDDEN METHODS --------------------------- */
 
 void ImageButton_draw(ImageButton const * const self) {
     self->super.super.vTable->draw((Widget *) self);
@@ -77,3 +129,7 @@ void ImageButton_draw(ImageButton const * const self) {
 char * ImageButton_toString(ImageButton const * const self) {
     return self->super.super.super.vTable->toString((Object *) self);
 }
+
+
+
+/* ******************** (C) COPYRIGHT <AHMED ELZOUGHBY> ********************* */
