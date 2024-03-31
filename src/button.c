@@ -27,7 +27,8 @@ static inline void __draw(Button const * const self) {
 }
 
 static inline char * __toString(Button const * const self) {
-    assert(0);
+    printf("This is a Button with id %u and text \"%s\"!\n",
+            Object_getId((Object *) self), self->text);
     return NULL;
 }
 

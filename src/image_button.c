@@ -18,7 +18,8 @@
 /* --------------------- VIRTUAL METHODS IMPLEMENTATION --------------------- */
 
 static inline void __rotate(ImageButton * const self) {
-    printf("ImageButton object with id %u got rotated!\n", Object_getId((Object *) self));
+    printf("ImageButton object with id %u got rotated!\n",
+            Object_getId((Object *) self));
 }
 
 static inline void __emulateClick(ImageButton * const self) {
@@ -31,7 +32,8 @@ static inline void __draw(ImageButton const * const self) {
 }
 
 static inline char * __toString(ImageButton const * const self) {
-    assert(0);
+    printf("This is an ImageButton with id %u, text \"%s\" and image \"%s\"!\n",
+            Object_getId((Object *) self), self->super.text, self->image);
     return NULL;
 }
 

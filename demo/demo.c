@@ -19,15 +19,26 @@ void buttons_click_action(Button * const b) {
 int main() {
     Button okButton, cancelButton;
     ImageButton backButton, forwardButton;
-    Widget justWidget;
 
     Button_construct(&okButton, 0, 110, 70, 16, "OK", &buttons_click_action);
-    Button_construct(&cancelButton, 80, 110, 70, 16, "Cancel", &buttons_click_action);
+    Button_construct(&cancelButton, 80, 110, 70, 16, "Cancel",
+            &buttons_click_action);
 
-    ImageButton_construct(&backButton, 0, 0, 100, 100, "Back", (void (*)(ImageButton * const)) &buttons_click_action, "left_arrow.png");
-    ImageButton_construct(&forwardButton, 110, 0, 100, 100, "Forward", (void (*)(ImageButton * const)) &buttons_click_action, "right_arrow.png");
+    ImageButton_construct(&backButton, 0, 0, 100, 100, "Back",
+            (void (*)(ImageButton * const)) &buttons_click_action,
+            "left_arrow.png");
+    ImageButton_construct(&forwardButton, 110, 0, 100, 100, "Forward",
+            (void (*)(ImageButton * const)) &buttons_click_action,
+            "right_arrow.png");
 
-    Widget_construct(&justWidget, 0, 0);
+    Object * justObject;
+    Widget * justWidget;
+
+    justObject = (Object *) Button_create(0, 0, 100, 100, "Just an object",
+            (void (*)(Button * const))  &buttons_click_action);
+    justWidget = (Widget *) ImageButton_create(0, 0, 100, 100, "Just a widget",
+            (void (*)(ImageButton * const)) &buttons_click_action,
+            "just_image.png");
 
     ImageButton_emulateClick(&backButton);
     Button_emulateClick((Button *) &forwardButton);
@@ -35,10 +46,8 @@ int main() {
     Button_emulateClick(&okButton);
     Button_emulateClick(&cancelButton);
 
-    ImageButton_rotate(&backButton);
-    ImageButton_rotate(&forwardButton);
-
-    Widget_toString((Widget *) &justWidget);
+    Object_toString(justObject);
+    Widget_toString(justWidget);
 
     printf("=============================================================\n");
     printf("Total objects created: %u\n", Object_getCount());
